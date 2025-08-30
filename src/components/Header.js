@@ -29,7 +29,7 @@ function Header() {
 
   return (
     <header style={{ 
-      background: 'linear-gradient(135deg, #2e7d32, #388e3c)', 
+      background: 'linear-gradient(135deg, #2e7d32, #388e3c, #1b5e20)', 
       color: 'white', 
       padding: '1rem 0', 
       marginBottom: '1rem',
@@ -61,19 +61,19 @@ function Header() {
       <div style={{ textAlign: 'center' }}>
         <h1 style={{ 
           margin: '0', 
-          fontSize: '2.2rem', 
+          fontSize: '2.4rem', 
           fontWeight: '700',
           textShadow: '0 2px 4px rgba(0,0,0,0.3)'
         }}>
-          🌿 Kerala Botaniq
+          🌿 Kerala BioDiversity 🦎
         </h1>
         <p style={{ 
           margin: '0.5rem 0 0 0', 
-          fontSize: '1rem', 
-          opacity: '0.9',
+          fontSize: '1.1rem', 
+          opacity: '0.95',
           fontStyle: 'italic'
         }}>
-          Discover God's Own Country's Flora
+          Explore Plants & Animals of God's Own Country
         </p>
       </div>
     </header>

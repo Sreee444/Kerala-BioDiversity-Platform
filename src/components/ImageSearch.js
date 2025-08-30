@@ -77,17 +77,17 @@ function ImageSearch({ onImageSearch }) {
             ✅ Image Selected: {selectedFile.name}
           </div>
           <div style={{ fontSize: '0.9rem', color: '#666' }}>
-            Analyzing plant... Check results below!
+            Analyzing species... Check results below!
           </div>
         </div>
       ) : (
         <div>
-          <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📸</div>
+          <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📸🔍</div>
           <div style={{ fontSize: '1.2rem', color: '#333', marginBottom: '0.5rem', fontWeight: 600 }}>
-            Identify Plant from Photo
+            Identify Species from Photo
           </div>
           <div style={{ fontSize: '1rem', color: '#666', marginBottom: '0.5rem' }}>
-            Upload an image to identify the plant species
+            Upload an image to identify plants or animals
           </div>
           <div style={{ fontSize: '0.9rem', color: '#999' }}>
             Drag & drop or click to browse • JPG, PNG supported

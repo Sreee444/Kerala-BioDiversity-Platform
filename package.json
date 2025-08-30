@@ -1,6 +1,7 @@
 {
-    "name": "kerala-botaniq",
+    "name": "kerala-biodiversity",
     "version": "1.0.0",
+    "description": "Explore Kerala's rich biodiversity - plants and animals",
     "main": "index.js",
     "dependencies": {
         "react": "^17.0.2",

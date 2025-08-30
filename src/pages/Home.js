@@ -7,17 +7,18 @@ import { searchTreflePlants } from '../api/trefle';
 import { fetchPlantNetData } from '../api/plantnet';
 
 function Home() {
-  const [plants, setPlants] = useState([]);
+  const [species, setSpecies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('all'); // 'all', 'plants', 'animals'
 
-  // Load some initial plants on component mount
+  // Load some initial species on component mount
   useEffect(() => {
-    const loadInitialPlants = async () => {
+    const loadInitialSpecies = async () => {
       setLoading(true);
       try {
-        const results = await searchTreflePlants('kerala plants');
-        setPlants(results);
+        const results = await searchTreflePlants('kerala biodiversity');
+        setSpecies(results);
       } catch (error) {
         console.error('Initial load error:', error);
       } finally {
@@ -25,17 +26,17 @@ function Home() {
       }
     };
     
-    loadInitialPlants();
+    loadInitialSpecies();
   }, []);
 
   const handleSearch = async (query) => {
     setLoading(true);
     try {
       const results = await searchTreflePlants(query);
-      setPlants(results);
+      setSpecies(results);
     } catch (error) {
       console.error('Search error:', error);
-      setPlants([]);
+      setSpecies([]);
     } finally {
       setLoading(false);
     }
@@ -52,34 +53,34 @@ function Home() {
       const result = await fetchPlantNetData(imageFile);
       
       if (result && result.results && result.results.length > 0) {
-        // Convert PlantNet results to our plant format
-        const identifiedPlants = result.results.slice(0, 5).map((plant, index) => ({
+        // Convert PlantNet results to our species format
+        const identifiedSpecies = result.results.slice(0, 5).map((item, index) => ({
           id: `plantnet_${Date.now()}_${index}`,
-          name: plant.species?.commonNames?.[0] || plant.species?.scientificNameWithoutAuthor || 'Unknown Plant',
-          scientificName: plant.species?.scientificNameWithoutAuthor || 'Unknown species',
-          family: plant.species?.family?.scientificNameWithoutAuthor || 'Unknown family',
-          image: plant.images?.[0]?.url?.m || plant.images?.[0]?.url?.s || 'https://via.placeholder.com/300x200?text=No+Image',
-          description: `Confidence: ${Math.round(plant.score * 100)}%. ${plant.species?.genus?.scientificNameWithoutAuthor || ''} species identified from uploaded image.`
+          name: item.species?.commonNames?.[0] || item.species?.scientificNameWithoutAuthor || 'Unknown Species',
+          scientificName: item.species?.scientificNameWithoutAuthor || 'Unknown species',
+          family: item.species?.family?.scientificNameWithoutAuthor || 'Unknown family',
+          image: item.images?.[0]?.url?.m || item.images?.[0]?.url?.s || 'https://via.placeholder.com/300x200?text=No+Image',
+          description: `Confidence: ${Math.round(item.score * 100)}%. ${item.species?.genus?.scientificNameWithoutAuthor || ''} species identified from uploaded image.`
         }));
         
-        setPlants(identifiedPlants);
-        console.log('Plant identification successful:', identifiedPlants);
+        setSpecies(identifiedSpecies);
+        console.log('Species identification successful:', identifiedSpecies);
       } else {
-        console.log('No plants identified from image');
-        // Fallback to show some example plants
-        const fallbackPlants = await searchTreflePlants('tropical plants');
-        setPlants(fallbackPlants);
+        console.log('No species identified from image');
+        // Fallback to show some example species
+        const fallbackSpecies = await searchTreflePlants('tropical biodiversity');
+        setSpecies(fallbackSpecies);
       }
     } catch (error) {
       console.error('Image identification error:', error);
-      // Show error message plants
-      setPlants([{
+      // Show error message
+      setSpecies([{
         id: 'error_1',
         name: 'Image Analysis Failed',
         scientificName: 'Please try another image',
         family: 'System Message',
         image: 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg',
-        description: 'Unable to identify plant from the uploaded image. Please try a clearer photo with visible plant features.'
+        description: 'Unable to identify species from the uploaded image. Please try a clearer photo with visible features.'
       }]);
     } finally {
       setImageLoading(false);
@@ -87,19 +88,53 @@ function Home() {
   };
 
   const quickSearchTerms = [
-    { label: '🌺 Hibiscus', term: 'hibiscus' },
-    { label: '🥥 Coconut', term: 'coconut' },
-    { label: '🌹 Rose', term: 'rosa' },
-    { label: '🌿 Ficus', term: 'ficus' },
-    { label: '🥭 Mango', term: 'mango' },
-    { label: '🎋 Bamboo', term: 'bamboo' }
+    { label: '🌺 Plants', term: 'kerala plants', category: 'plants' },
+    { label: '� Animals', term: 'kerala animals', category: 'animals' },
+    { label: '� Herbs', term: 'medicinal plants', category: 'plants' },
+    { label: '🦅 Birds', term: 'kerala birds', category: 'animals' },
+    { label: '🌳 Trees', term: 'forest trees', category: 'plants' },
+    { label: '🐘 Wildlife', term: 'kerala wildlife', category: 'animals' }
   ];
+
+  const tabStyle = (tab) => ({
+    padding: '0.5rem 1rem',
+    backgroundColor: activeTab === tab ? '#2e7d32' : 'transparent',
+    color: activeTab === tab ? 'white' : '#2e7d32',
+    border: `2px solid #2e7d32`,
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontWeight: 600,
+    transition: 'all 0.3s ease',
+    fontSize: '1rem'
+  });
 
   return (
     <div className="home">
       <div className="hero-section">
-        <h1>Discover Kerala's Flora</h1>
-        <p>Explore the rich botanical diversity of God's Own Country</p>
+        <h1>Discover Kerala's BioDiversity</h1>
+        <p>Explore the rich flora and fauna of God's Own Country</p>
+        
+        {/* Category Tabs */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '2rem' }}>
+          <button 
+            style={tabStyle('all')}
+            onClick={() => setActiveTab('all')}
+          >
+            🌍 All Species
+          </button>
+          <button 
+            style={tabStyle('plants')}
+            onClick={() => setActiveTab('plants')}
+          >
+            🌿 Plants
+          </button>
+          <button 
+            style={tabStyle('animals')}
+            onClick={() => setActiveTab('animals')}
+          >
+            🦎 Animals
+          </button>
+        </div>
       </div>
       
       <div className="search-section">
@@ -107,10 +142,12 @@ function Home() {
         
         <div style={{ margin: '1rem 0' }}>
           <div style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem', textAlign: 'center' }}>
-            Quick Search:
+            Quick Explore:
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', justifyContent: 'center' }}>
-            {quickSearchTerms.map((item, index) => (
+            {quickSearchTerms
+              .filter(item => activeTab === 'all' || item.category === activeTab)
+              .map((item, index) => (
               <button
                 key={index}
                 onClick={() => handleQuickSearch(item.term)}
@@ -144,10 +181,10 @@ function Home() {
         <ImageSearch onImageSearch={handleImageSearch} />
       </div>
 
-      {loading && <div className="loading">Searching for plants...</div>}
-      {imageLoading && <div className="loading">🔍 Identifying plant from your image...</div>}
+      {loading && <div className="loading">Searching for species...</div>}
+      {imageLoading && <div className="loading">🔍 Identifying species from your image...</div>}
       
-      <PlantList plants={plants} />
+      <PlantList plants={species} />
     </div>
   );
 }

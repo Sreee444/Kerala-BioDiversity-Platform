@@ -15,10 +15,10 @@ function SearchBar({ onSearch }) {
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search plants... (try: rosa, mango, hibiscus)"
+        placeholder="Search plants & animals... (try: kerala birds, medicinal plants)"
         style={{
           padding: '0.7rem 1rem',
-          width: 340,
+          width: 380,
           fontSize: '1rem',
           borderRadius: 6,
           border: '1.5px solid #bdbdbd',
