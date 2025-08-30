@@ -126,8 +126,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-- **Repository**: [Kerala-Botaniq](https://github.com/Sreee444/Kerala-Botaniq)
-- **Issues**: [Report bugs or request features](https://github.com/Sreee444/Kerala-Botaniq/issues)
+- **Repository**: [Kerala-Botaniq](https://github.com/Sreee444/Kerala-BioDiversity-Platform)
+- **Issues**: [Report bugs or request features](https://github.com/Sreee444/Kerala-BioDiversity-Platform/issues)
 
 ---
 
