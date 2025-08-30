@@ -6,7 +6,11 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import NotFound from './pages/NotFound';
-
+import SpeciesDetails from './pages/SpeciesDetails';
+import Favorites from './pages/Favorites';
+import Gallery from './pages/Gallery';
+import Compare from './pages/Compare';
+import RandomDiscovery from './pages/RandomDiscovery';
 
 const App = () => (
     <Router>
@@ -16,6 +20,11 @@ const App = () => (
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/about" component={About} />
+                    <Route path="/species/:id" component={SpeciesDetails} />
+                    <Route path="/favorites" component={Favorites} />
+                    <Route path="/gallery" component={Gallery} />
+                    <Route path="/compare" component={Compare} />
+                    <Route path="/discovery" component={RandomDiscovery} />
                     <Route component={NotFound} />
                 </Switch>
             </div>

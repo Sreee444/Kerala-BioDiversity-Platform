@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
 import PlantList from '../components/PlantList';
 import ImageSearch from '../components/ImageSearch';
@@ -11,6 +12,7 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('all'); // 'all', 'plants', 'animals'
+  const history = useHistory();
 
   // Load some initial species on component mount
   useEffect(() => {
@@ -179,6 +181,206 @@ function Home() {
         
         <div className="divider">or</div>
         <ImageSearch onImageSearch={handleImageSearch} />
+
+        {/* Feature Access Buttons */}
+        <div style={{ 
+          marginTop: '3rem', 
+          padding: '2.5rem', 
+          background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+          borderRadius: '20px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+          border: '1px solid rgba(255,255,255,0.2)'
+        }}>
+          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <h3 style={{ 
+              color: '#2e7d32', 
+              fontSize: '1.8rem',
+              fontWeight: '700',
+              marginBottom: '0.5rem',
+              background: 'linear-gradient(135deg, #2e7d32, #4caf50)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              🚀 Discover More Features
+            </h3>
+            <p style={{ 
+              color: '#666', 
+              fontSize: '1.1rem',
+              margin: 0,
+              fontStyle: 'italic'
+            }}>
+              Unlock the full potential of Kerala's biodiversity exploration
+            </p>
+          </div>
+          
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(4, 1fr)', 
+            gap: '1.5rem',
+            '@media (max-width: 1200px)': {
+              gridTemplateColumns: 'repeat(2, 1fr)'
+            },
+            '@media (max-width: 768px)': {
+              gridTemplateColumns: '1fr'
+            }
+          }}>
+            <div
+              onClick={() => history.push('/gallery')}
+              style={{
+                padding: '1.8rem 1.5rem',
+                background: 'linear-gradient(135deg, #2196f3 0%, #1976d2 100%)',
+                color: 'white',
+                borderRadius: '16px',
+                cursor: 'pointer',
+                textAlign: 'center',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 4px 20px rgba(33, 150, 243, 0.3)',
+                border: 'none',
+                transform: 'translateY(0)',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-8px)';
+                e.target.style.boxShadow = '0 12px 40px rgba(33, 150, 243, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 4px 20px rgba(33, 150, 243, 0.3)';
+              }}
+            >
+              <div style={{ fontSize: '3rem', marginBottom: '1rem', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}>🖼️</div>
+              <h4 style={{ margin: '0 0 0.8rem 0', fontSize: '1.3rem', fontWeight: '600' }}>Species Gallery</h4>
+              <p style={{ margin: 0, fontSize: '0.95rem', opacity: 0.95, lineHeight: '1.4' }}>
+                Browse our complete collection in a stunning visual gallery
+              </p>
+            </div>
+
+            <div
+              onClick={() => history.push('/favorites')}
+              style={{
+                padding: '1.8rem 1.5rem',
+                background: 'linear-gradient(135deg, #f44336 0%, #d32f2f 100%)',
+                color: 'white',
+                borderRadius: '16px',
+                cursor: 'pointer',
+                textAlign: 'center',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 4px 20px rgba(244, 67, 54, 0.3)',
+                border: 'none',
+                transform: 'translateY(0)'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-8px)';
+                e.target.style.boxShadow = '0 12px 40px rgba(244, 67, 54, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 4px 20px rgba(244, 67, 54, 0.3)';
+              }}
+            >
+              <div style={{ fontSize: '3rem', marginBottom: '1rem', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}>❤️</div>
+              <h4 style={{ margin: '0 0 0.8rem 0', fontSize: '1.3rem', fontWeight: '600' }}>My Favorites</h4>
+              <p style={{ margin: 0, fontSize: '0.95rem', opacity: 0.95, lineHeight: '1.4' }}>
+                Your personal collection of beloved species
+              </p>
+            </div>
+
+            <div
+              onClick={() => history.push('/compare')}
+              style={{
+                padding: '1.8rem 1.5rem',
+                background: 'linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%)',
+                color: 'white',
+                borderRadius: '16px',
+                cursor: 'pointer',
+                textAlign: 'center',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 4px 20px rgba(156, 39, 176, 0.3)',
+                border: 'none',
+                transform: 'translateY(0)'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-8px)';
+                e.target.style.boxShadow = '0 12px 40px rgba(156, 39, 176, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 4px 20px rgba(156, 39, 176, 0.3)';
+              }}
+            >
+              <div style={{ fontSize: '3rem', marginBottom: '1rem', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}>⚖️</div>
+              <h4 style={{ margin: '0 0 0.8rem 0', fontSize: '1.3rem', fontWeight: '600' }}>Compare Species</h4>
+              <p style={{ margin: 0, fontSize: '0.95rem', opacity: 0.95, lineHeight: '1.4' }}>
+                Analyze differences and similarities side by side
+              </p>
+            </div>
+
+            <div
+              onClick={() => history.push('/discovery')}
+              style={{
+                padding: '1.8rem 1.5rem',
+                background: 'linear-gradient(135deg, #ff9800 0%, #f57c00 100%)',
+                color: 'white',
+                borderRadius: '16px',
+                cursor: 'pointer',
+                textAlign: 'center',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 4px 20px rgba(255, 152, 0, 0.3)',
+                border: 'none',
+                transform: 'translateY(0)'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-8px)';
+                e.target.style.boxShadow = '0 12px 40px rgba(255, 152, 0, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 4px 20px rgba(255, 152, 0, 0.3)';
+              }}
+            >
+              <div style={{ fontSize: '3rem', marginBottom: '1rem', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}>🎲</div>
+              <h4 style={{ margin: '0 0 0.8rem 0', fontSize: '1.3rem', fontWeight: '600' }}>Random Discovery</h4>
+              <p style={{ margin: 0, fontSize: '0.95rem', opacity: 0.95, lineHeight: '1.4' }}>
+                Let serendipity guide your biodiversity journey
+              </p>
+            </div>
+          </div>
+
+          {/* Additional Quick Stats */}
+          <div style={{ 
+            marginTop: '2rem', 
+            padding: '1.5rem',
+            background: 'rgba(255,255,255,0.7)',
+            borderRadius: '12px',
+            border: '1px solid rgba(255,255,255,0.5)'
+          }}>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
+              gap: '1rem',
+              textAlign: 'center'
+            }}>
+              <div>
+                <div style={{ fontSize: '1.8rem', color: '#2e7d32', fontWeight: 'bold' }}>4000+</div>
+                <div style={{ fontSize: '0.9rem', color: '#666' }}>Plant Species</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '1.8rem', color: '#ff9800', fontWeight: 'bold' }}>500+</div>
+                <div style={{ fontSize: '0.9rem', color: '#666' }}>Bird Species</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '1.8rem', color: '#9c27b0', fontWeight: 'bold' }}>139</div>
+                <div style={{ fontSize: '0.9rem', color: '#666' }}>Mammals</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '1.8rem', color: '#2196f3', fontWeight: 'bold' }}>∞</div>
+                <div style={{ fontSize: '0.9rem', color: '#666' }}>Discoveries</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {loading && <div className="loading">Searching for species...</div>}

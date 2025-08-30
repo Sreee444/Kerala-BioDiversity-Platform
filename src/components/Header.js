@@ -9,8 +9,8 @@ function Header() {
     color: 'white',
     textDecoration: 'none',
     fontWeight: 'bold',
-    fontSize: '1.2rem',
-    padding: '0.5rem 1rem',
+    fontSize: '0.95rem',
+    padding: '0.4rem 0.8rem',
     borderRadius: '6px',
     transition: 'all 0.3s ease',
     backgroundColor: location.pathname === path ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
@@ -38,8 +38,10 @@ function Header() {
       <nav style={{ 
         display: 'flex', 
         justifyContent: 'center', 
-        gap: '1rem',
-        marginBottom: '1rem'
+        gap: '0.5rem',
+        marginBottom: '1rem',
+        flexWrap: 'wrap',
+        padding: '0 1rem'
       }}>
         <Link 
           to="/" 
@@ -48,6 +50,38 @@ function Header() {
           onMouseOut={(e) => handleMouseOut(e, '/')}
         >
           🏠 Home
+        </Link>
+        <Link 
+          to="/gallery" 
+          style={linkStyle('/gallery')}
+          onMouseOver={handleMouseOver}
+          onMouseOut={(e) => handleMouseOut(e, '/gallery')}
+        >
+          🖼️ Gallery
+        </Link>
+        <Link 
+          to="/favorites" 
+          style={linkStyle('/favorites')}
+          onMouseOver={handleMouseOver}
+          onMouseOut={(e) => handleMouseOut(e, '/favorites')}
+        >
+          ❤️ Favorites
+        </Link>
+        <Link 
+          to="/compare" 
+          style={linkStyle('/compare')}
+          onMouseOver={handleMouseOver}
+          onMouseOut={(e) => handleMouseOut(e, '/compare')}
+        >
+          ⚖️ Compare
+        </Link>
+        <Link 
+          to="/discovery" 
+          style={linkStyle('/discovery')}
+          onMouseOver={handleMouseOver}
+          onMouseOut={(e) => handleMouseOut(e, '/discovery')}
+        >
+          🎲 Surprise
         </Link>
         <Link 
           to="/about" 
