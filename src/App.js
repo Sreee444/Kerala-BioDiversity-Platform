@@ -15,8 +15,21 @@ import RandomDiscovery from './pages/RandomDiscovery';
 const App = () => (
     <Router>
         <Header />
-        <main style={{ minHeight: '70vh', padding: '2rem 0', background: '#f7faf7' }}>
-            <div style={{ maxWidth: 1100, margin: '0 auto', background: 'white', borderRadius: 12, boxShadow: '0 2px 16px #0001', padding: '2rem' }}>
+        <main style={{ 
+            minHeight: '70vh', 
+            padding: 'clamp(0.5rem, 2vw, 2rem)', 
+            background: '#f7faf7' 
+        }}>
+            <div style={{ 
+                maxWidth: 1100, 
+                margin: '0 auto', 
+                background: 'white', 
+                borderRadius: 'clamp(8px, 2vw, 12px)', 
+                boxShadow: '0 2px 16px rgba(0, 0, 0, 0.1)', 
+                padding: 'clamp(1rem, 3vw, 2rem)',
+                width: '100%',
+                boxSizing: 'border-box'
+            }}>
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/about" component={About} />

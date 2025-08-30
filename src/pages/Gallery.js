@@ -10,6 +10,14 @@ function Gallery() {
   const history = useHistory();
 
   const categories = ['All', 'Plants', 'Animals', 'Birds', 'Reptiles', 'Amphibians', 'Insects'];
+  const quickCategories = [
+    { name: 'Plants', emoji: '🌿', color: '#4caf50' },
+    { name: 'Animals', emoji: '🐾', color: '#ff9800' },
+    { name: 'Herbs', emoji: '🌿', color: '#8bc34a' },
+    { name: 'Birds', emoji: '🦅', color: '#2196f3' },
+    { name: 'Trees', emoji: '🌳', color: '#795548' },
+    { name: 'Wildlife', emoji: '🦎', color: '#f44336' }
+  ];
 
   useEffect(() => {
     const savedSpecies = JSON.parse(localStorage.getItem('speciesData') || '[]');
@@ -23,22 +31,40 @@ function Gallery() {
     // Filter by category
     if (selectedCategory !== 'All') {
       filtered = filtered.filter(species => {
-        const desc = species.description.toLowerCase();
+        const desc = species.description?.toLowerCase() || '';
         const family = species.family?.toLowerCase() || '';
+        const name = species.name?.toLowerCase() || '';
+        const scientificName = species.scientificName?.toLowerCase() || '';
         
         switch (selectedCategory) {
           case 'Plants':
-            return desc.includes('🌿') || family.includes('plantae');
+            return desc.includes('plant') || desc.includes('🌿') || desc.includes('tree') || 
+                   desc.includes('flower') || desc.includes('herb') || desc.includes('leaf') ||
+                   family.includes('plantae') || family.includes('plant') ||
+                   name.includes('tree') || name.includes('plant') || name.includes('flower') ||
+                   scientificName.includes('plant');
           case 'Birds':
-            return desc.includes('🦅') || family.includes('aves');
+            return desc.includes('bird') || desc.includes('🦅') || desc.includes('🐦') ||
+                   family.includes('aves') || family.includes('bird') ||
+                   name.includes('bird') || scientificName.includes('bird');
           case 'Reptiles':
-            return desc.includes('🐍') || family.includes('reptilia');
+            return desc.includes('reptile') || desc.includes('🐍') || desc.includes('🦎') ||
+                   family.includes('reptilia') || family.includes('reptile') ||
+                   name.includes('snake') || name.includes('lizard') || name.includes('reptile');
           case 'Amphibians':
-            return desc.includes('🐸') || family.includes('amphibia');
+            return desc.includes('amphibian') || desc.includes('🐸') || desc.includes('frog') ||
+                   family.includes('amphibia') || family.includes('amphibian') ||
+                   name.includes('frog') || name.includes('toad');
           case 'Insects':
-            return desc.includes('🦋') || family.includes('insecta');
+            return desc.includes('insect') || desc.includes('🦋') || desc.includes('🐛') ||
+                   desc.includes('butterfly') || desc.includes('bee') || desc.includes('ant') ||
+                   family.includes('insecta') || family.includes('insect') ||
+                   name.includes('butterfly') || name.includes('bee') || name.includes('ant');
           case 'Animals':
-            return desc.includes('🐾') || (!desc.includes('🌿') && !family.includes('plantae'));
+            return desc.includes('animal') || desc.includes('🐾') || desc.includes('mammal') ||
+                   desc.includes('wildlife') || (!desc.includes('🌿') && !desc.includes('plant')) ||
+                   family.includes('mammalia') || family.includes('animal') ||
+                   name.includes('deer') || name.includes('elephant') || name.includes('tiger');
           default:
             return true;
         }
@@ -49,11 +75,11 @@ function Gallery() {
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'name':
-          return a.name.localeCompare(b.name);
+          return (a.name || '').localeCompare(b.name || '');
         case 'scientific':
-          return a.scientificName.localeCompare(b.scientificName);
+          return (a.scientificName || '').localeCompare(b.scientificName || '');
         case 'category':
-          return a.family.localeCompare(b.family);
+          return (a.family || '').localeCompare(b.family || '');
         default:
           return 0;
       }
@@ -76,98 +102,230 @@ function Gallery() {
         </p>
       </div>
 
+      {/* Quick Category Filters */}
+      <div style={{ 
+        marginBottom: '2rem',
+        padding: '1rem',
+        backgroundColor: '#f8f9fa',
+        borderRadius: '12px',
+        border: '1px solid #e0e0e0'
+      }}>
+        <h3 style={{ 
+          color: '#333', 
+          marginBottom: '1rem', 
+          fontSize: '1.1rem',
+          fontWeight: '600'
+        }}>
+          Quick Explore:
+        </h3>
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '0.8rem',
+          justifyContent: 'center'
+        }}>
+          {quickCategories.map((category) => (
+            <button
+              key={category.name}
+              onClick={() => {
+                if (category.name === 'Herbs') {
+                  setSelectedCategory('Plants'); // Map herbs to plants
+                } else if (category.name === 'Trees') {
+                  setSelectedCategory('Plants'); // Map trees to plants
+                } else if (category.name === 'Wildlife') {
+                  setSelectedCategory('Animals'); // Map wildlife to animals
+                } else {
+                  setSelectedCategory(category.name);
+                }
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.7rem 1.2rem',
+                backgroundColor: selectedCategory === category.name || 
+                  (category.name === 'Herbs' && selectedCategory === 'Plants') ||
+                  (category.name === 'Trees' && selectedCategory === 'Plants') ||
+                  (category.name === 'Wildlife' && selectedCategory === 'Animals') 
+                  ? category.color : 'white',
+                color: selectedCategory === category.name || 
+                  (category.name === 'Herbs' && selectedCategory === 'Plants') ||
+                  (category.name === 'Trees' && selectedCategory === 'Plants') ||
+                  (category.name === 'Wildlife' && selectedCategory === 'Animals') 
+                  ? 'white' : category.color,
+                border: `2px solid ${category.color}`,
+                borderRadius: '25px',
+                cursor: 'pointer',
+                fontSize: '0.95rem',
+                fontWeight: '600',
+                transition: 'all 0.3s ease',
+                boxShadow: selectedCategory === category.name || 
+                  (category.name === 'Herbs' && selectedCategory === 'Plants') ||
+                  (category.name === 'Trees' && selectedCategory === 'Plants') ||
+                  (category.name === 'Wildlife' && selectedCategory === 'Animals') 
+                  ? `0 4px 12px ${category.color}40` : '0 2px 8px rgba(0,0,0,0.1)',
+                transform: selectedCategory === category.name || 
+                  (category.name === 'Herbs' && selectedCategory === 'Plants') ||
+                  (category.name === 'Trees' && selectedCategory === 'Plants') ||
+                  (category.name === 'Wildlife' && selectedCategory === 'Animals') 
+                  ? 'translateY(-2px)' : 'translateY(0)',
+                minWidth: '100px'
+              }}
+              onMouseOver={(e) => {
+                if (!(selectedCategory === category.name || 
+                  (category.name === 'Herbs' && selectedCategory === 'Plants') ||
+                  (category.name === 'Trees' && selectedCategory === 'Plants') ||
+                  (category.name === 'Wildlife' && selectedCategory === 'Animals'))) {
+                  e.target.style.backgroundColor = `${category.color}10`;
+                  e.target.style.transform = 'translateY(-1px)';
+                }
+              }}
+              onMouseOut={(e) => {
+                if (!(selectedCategory === category.name || 
+                  (category.name === 'Herbs' && selectedCategory === 'Plants') ||
+                  (category.name === 'Trees' && selectedCategory === 'Plants') ||
+                  (category.name === 'Wildlife' && selectedCategory === 'Animals'))) {
+                  e.target.style.backgroundColor = 'white';
+                  e.target.style.transform = 'translateY(0)';
+                }
+              }}
+            >
+              <span style={{ fontSize: '1.2rem' }}>{category.emoji}</span>
+              <span>{category.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Controls */}
+      {/* Mobile-First Filter Controls */}
       <div style={{ 
         display: 'flex', 
-        flexWrap: 'wrap',
+        flexDirection: 'column',
         gap: '1rem',
         marginBottom: '2rem',
         padding: '1rem',
         backgroundColor: '#f5f5f5',
         borderRadius: '12px'
       }}>
-        {/* Category Filter */}
-        <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', color: '#333' }}>
-            Category:
-          </label>
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            style={{
-              padding: '0.5rem',
-              borderRadius: '6px',
-              border: '1px solid #ddd',
-              fontSize: '1rem'
-            }}
-          >
-            {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Sort By */}
-        <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', color: '#333' }}>
-            Sort by:
-          </label>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            style={{
-              padding: '0.5rem',
-              borderRadius: '6px',
-              border: '1px solid #ddd',
-              fontSize: '1rem'
-            }}
-          >
-            <option value="name">Name</option>
-            <option value="scientific">Scientific Name</option>
-            <option value="category">Category</option>
-          </select>
-        </div>
-
-        {/* View Mode */}
-        <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', color: '#333' }}>
-            View:
-          </label>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button
-              onClick={() => setViewMode('grid')}
+        {/* Top Row - Category and Results Count */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '1rem'
+        }}>
+          <div style={{ flex: '1', minWidth: '150px' }}>
+            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', color: '#333', fontSize: '0.9rem' }}>
+              Category:
+            </label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
               style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: viewMode === 'grid' ? '#388e3c' : '#ddd',
-                color: viewMode === 'grid' ? 'white' : '#333',
-                border: 'none',
-                borderRadius: '6px',
-                cursor: 'pointer'
+                width: '100%',
+                padding: '0.6rem',
+                borderRadius: '8px',
+                border: '1px solid #ddd',
+                fontSize: '0.95rem',
+                backgroundColor: 'white'
               }}
             >
-              Grid
-            </button>
-            <button
-              onClick={() => setViewMode('masonry')}
-              style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: viewMode === 'masonry' ? '#388e3c' : '#ddd',
-                color: viewMode === 'masonry' ? 'white' : '#333',
-                border: 'none',
-                borderRadius: '6px',
-                cursor: 'pointer'
-              }}
-            >
-              Masonry
-            </button>
+              {categories.map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+
+          <div style={{ 
+            alignSelf: 'end',
+            textAlign: 'right',
+            minWidth: 'fit-content'
+          }}>
+            <span style={{ 
+              color: '#666', 
+              fontSize: '0.95rem',
+              fontWeight: '600',
+              background: 'white',
+              padding: '0.5rem 1rem',
+              borderRadius: '20px',
+              border: '1px solid #ddd'
+            }}>
+              {filteredSpecies.length} species found
+            </span>
           </div>
         </div>
 
-        {/* Results Count */}
-        <div style={{ marginLeft: 'auto', alignSelf: 'end' }}>
-          <span style={{ color: '#666', fontSize: '1rem' }}>
-            {filteredSpecies.length} species found
-          </span>
+        {/* Bottom Row - Sort and View Controls */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'end',
+          flexWrap: 'wrap',
+          gap: '1rem'
+        }}>
+          <div style={{ flex: '1', minWidth: '150px' }}>
+            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', color: '#333', fontSize: '0.9rem' }}>
+              Sort by:
+            </label>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '0.6rem',
+                borderRadius: '8px',
+                border: '1px solid #ddd',
+                fontSize: '0.95rem',
+                backgroundColor: 'white'
+              }}
+            >
+              <option value="name">Name</option>
+              <option value="scientific">Scientific Name</option>
+              <option value="category">Category</option>
+            </select>
+          </div>
+
+          <div style={{ minWidth: 'fit-content' }}>
+            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', color: '#333', fontSize: '0.9rem' }}>
+              View:
+            </label>
+            <div style={{ display: 'flex', gap: '0.3rem' }}>
+              <button
+                onClick={() => setViewMode('grid')}
+                style={{
+                  padding: '0.6rem 1rem',
+                  backgroundColor: viewMode === 'grid' ? '#388e3c' : 'white',
+                  color: viewMode === 'grid' ? 'white' : '#333',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                📊 Grid
+              </button>
+              <button
+                onClick={() => setViewMode('masonry')}
+                style={{
+                  padding: '0.6rem 1rem',
+                  backgroundColor: viewMode === 'masonry' ? '#388e3c' : 'white',
+                  color: viewMode === 'masonry' ? 'white' : '#333',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                🧱 Masonry
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
