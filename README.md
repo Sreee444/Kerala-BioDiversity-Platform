@@ -40,7 +40,7 @@ A comprehensive React-based biodiversity exploration platform showcasing the ric
 
 ## 🚀 Live Demo
 
-Visit the live application: **[Kerala BioDiversity Platform](https://kerala-botaniq.vercel.app)**
+Visit the live application: **[Kerala BioDiversity Platform](kerala-bio-diversity-platform-93t4bkubd-sree444s-projects.vercel.app)**
 
 Experience the full platform with all features including species discovery, AI plant identification, favorites management, and conservation insights.
 
