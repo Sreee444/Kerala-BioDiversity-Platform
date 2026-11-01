@@ -12,49 +12,75 @@ function RandomDiscovery() {
     setHistoryList(savedHistory);
   }, []);
 
+  const recordDiscovery = (species, currentHistory) => {
+    const newHistory = [
+      species,
+      ...currentHistory.filter(item => String(item.id) !== String(species.id))
+    ].slice(0, 10);
+
+    setRandomSpecies(species);
+    setHistoryList(newHistory);
+    localStorage.setItem('discoveryHistory', JSON.stringify(newHistory));
+  };
+
   const getRandomSpecies = async () => {
     setLoading(true);
-    
+
+    const savedHistory = JSON.parse(localStorage.getItem('discoveryHistory') || '[]');
+    const recentIds = new Set(savedHistory.map(species => String(species.id)));
+    const currentId = randomSpecies ? String(randomSpecies.id) : null;
+
     // First try to get from saved species
     const savedSpecies = JSON.parse(localStorage.getItem('speciesData') || '[]');
-    
+
     if (savedSpecies.length > 0) {
-      const randomIndex = Math.floor(Math.random() * savedSpecies.length);
-      const species = savedSpecies[randomIndex];
-      setRandomSpecies(species);
-      
-      // Add to history
-      const newHistory = [species, ...history_list].slice(0, 10); // Keep last 10
-      setHistoryList(newHistory);
-      localStorage.setItem('discoveryHistory', JSON.stringify(newHistory));
+      let candidates = savedSpecies.filter(species =>
+        !recentIds.has(String(species.id)) && String(species.id) !== currentId
+      );
+
+      // If every saved species was shown recently, at least avoid the current card.
+      if (candidates.length === 0) {
+        candidates = savedSpecies.filter(species => String(species.id) !== currentId);
+      }
+
+      // A single saved species is allowed to repeat because there is no alternative.
+      if (candidates.length === 0) {
+        candidates = savedSpecies;
+      }
+
+      const species = candidates[Math.floor(Math.random() * candidates.length)];
+      recordDiscovery(species, savedHistory);
     } else {
       // If no saved species, make API call for random discovery
       try {
-        const randomPage = Math.floor(Math.random() * 10) + 1;
-        const response = await fetch(
-          `https://api.inaturalist.org/v1/observations?place_id=7161&page=${randomPage}&per_page=1&order=random&quality_grade=research`
-        );
-        
-        if (response.ok) {
-          const data = await response.json();
-          if (data.results && data.results.length > 0) {
-            const obs = data.results[0];
-            const species = {
-              id: obs.id,
-              name: obs.taxon?.preferred_common_name || obs.taxon?.name || 'Unknown Species',
-              scientificName: obs.taxon?.name || 'Unknown',
-              family: obs.taxon?.iconic_taxon_name || 'Unknown',
-              image: obs.photos?.[0]?.url || 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg',
-              description: `Random discovery from Kerala! Observed ${obs.observed_on || 'recently'}.`
-            };
-            
-            setRandomSpecies(species);
-            
-            // Add to history
-            const newHistory = [species, ...history_list].slice(0, 10);
-            setHistoryList(newHistory);
-            localStorage.setItem('discoveryHistory', JSON.stringify(newHistory));
+        let discoveredSpecies = null;
+
+        for (let attempt = 0; attempt < 5 && !discoveredSpecies; attempt += 1) {
+          const randomPage = Math.floor(Math.random() * 10) + 1;
+          const response = await fetch(
+            `https://api.inaturalist.org/v1/observations?place_id=7161&page=${randomPage}&per_page=1&order=random&quality_grade=research`
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            const obs = data.results?.[0];
+            if (obs && !recentIds.has(String(obs.id)) && String(obs.id) !== currentId) {
+              discoveredSpecies = {
+                id: obs.id,
+                name: obs.taxon?.preferred_common_name || obs.taxon?.name || 'Unknown Species',
+                scientificName: obs.taxon?.name || 'Unknown',
+                family: obs.taxon?.iconic_taxon_name || 'Unknown',
+                image: obs.photos?.[0]?.url || 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg',
+                description: `Random discovery from Kerala! Observed ${obs.observed_on || 'recently'}.`
+              };
+            }
           }
+        }
+
+        if (discoveredSpecies) {
+          recordDiscovery(discoveredSpecies, savedHistory);
+        } else {
+          throw new Error('Could not find a new species after several attempts.');
         }
       } catch (error) {
         console.error('Error fetching random species:', error);
