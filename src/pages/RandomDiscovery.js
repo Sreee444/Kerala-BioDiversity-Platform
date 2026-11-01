@@ -44,7 +44,7 @@ function RandomDiscovery() {
               name: obs.taxon?.preferred_common_name || obs.taxon?.name || 'Unknown Species',
               scientificName: obs.taxon?.name || 'Unknown',
               family: obs.taxon?.iconic_taxon_name || 'Unknown',
-              image: obs.photos?.[0]?.url || '/api/placeholder/400/300',
+              image: obs.photos?.[0]?.url || 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg',
               description: `Random discovery from Kerala! Observed ${obs.observed_on || 'recently'}.`
             };
             
@@ -64,7 +64,7 @@ function RandomDiscovery() {
           name: 'Kerala Biodiversity',
           scientificName: 'Biodiversitas keralensis',
           family: 'Discovery',
-          image: '/api/placeholder/400/300',
+          image: 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg',
           description: 'Explore the amazing biodiversity of Kerala! Use the search feature to discover specific species.'
         };
         setRandomSpecies(fallbackSpecies);

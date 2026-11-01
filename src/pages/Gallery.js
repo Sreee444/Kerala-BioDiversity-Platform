@@ -365,7 +365,7 @@ function Gallery() {
           gap: '1rem',
           gridAutoRows: viewMode === 'masonry' ? 'masonry' : 'auto'
         }}>
-          {filteredSpecies.map((species, index) => (
+          {filteredSpecies.map((species) => (
             <div
               key={species.id}
               onClick={() => viewSpecies(species.id)}

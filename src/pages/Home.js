@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
 import PlantList from '../components/PlantList';
@@ -12,6 +12,9 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('all'); // 'all', 'plants', 'animals'
+  const [hasUserSearched, setHasUserSearched] = useState(false);
+  const [searchContext, setSearchContext] = useState('kerala biodiversity');
+  const resultsRef = useRef(null);
   const history = useHistory();
 
   // Load some initial species on component mount
@@ -32,9 +35,14 @@ function Home() {
   }, []);
 
   const handleSearch = async (query) => {
+    const normalizedQuery = query.trim();
+    if (!normalizedQuery) return;
+
+    setHasUserSearched(true);
+    setSearchContext(normalizedQuery);
     setLoading(true);
     try {
-      const results = await searchTreflePlants(query);
+      const results = await searchTreflePlants(normalizedQuery);
       setSpecies(results);
     } catch (error) {
       console.error('Search error:', error);
@@ -49,6 +57,8 @@ function Home() {
   };
 
   const handleImageSearch = async (imageFile) => {
+    setHasUserSearched(true);
+    setSearchContext('image identification');
     setImageLoading(true);
     try {
       console.log('Uploading image for identification...');
@@ -89,10 +99,18 @@ function Home() {
     }
   };
 
+  useEffect(() => {
+    if (!hasUserSearched) return;
+    if (loading || imageLoading) return;
+    if (!resultsRef.current) return;
+
+    resultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [species, loading, imageLoading, hasUserSearched]);
+
   const quickSearchTerms = [
     { label: '🌺 Plants', term: 'kerala plants', category: 'plants' },
-    { label: '� Animals', term: 'kerala animals', category: 'animals' },
-    { label: '� Herbs', term: 'medicinal plants', category: 'plants' },
+    { label: '🐾 Animals', term: 'kerala animals', category: 'animals' },
+    { label: '🌿 Herbs', term: 'medicinal plants', category: 'plants' },
     { label: '🦅 Birds', term: 'kerala birds', category: 'animals' },
     { label: '🌳 Trees', term: 'forest trees', category: 'plants' },
     { label: '🐘 Wildlife', term: 'kerala wildlife', category: 'animals' }
@@ -383,9 +401,25 @@ function Home() {
         </div>
       </div>
 
+      <div
+        ref={resultsRef}
+        style={{
+          marginTop: '1.5rem',
+          padding: '1rem',
+          backgroundColor: '#f8fff8',
+          border: '1px solid #dcefdc',
+          borderRadius: '10px'
+        }}
+      >
+        <h3 style={{ margin: '0 0 0.5rem 0', color: '#2e7d32' }}>Search Results</h3>
+        <p style={{ margin: 0, color: '#666' }}>
+          Showing results for <strong>{searchContext}</strong>
+        </p>
+      </div>
+
       {loading && <div className="loading">Searching for species...</div>}
       {imageLoading && <div className="loading">🔍 Identifying species from your image...</div>}
-      
+
       <PlantList plants={species} />
     </div>
   );

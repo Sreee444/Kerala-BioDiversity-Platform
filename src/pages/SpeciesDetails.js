@@ -442,32 +442,6 @@ function SpeciesDetails() {
         </div>
       </div>
 
-      {/* Seasonal Information */}
-      {seasonal && (
-        <div style={{ 
-          padding: '1.5rem', 
-          backgroundColor: '#e8f5e8', 
-          borderRadius: '12px',
-          marginBottom: '2rem'
-        }}>
-          <h2 style={{ color: '#2e7d32', marginBottom: '1rem' }}>🗓️ Best Time to Spot</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
-            <div>
-              <h4 style={{ color: '#388e3c', margin: '0 0 0.5rem 0' }}>Best Time</h4>
-              <p style={{ margin: 0 }}>{seasonal.bestTime}</p>
-            </div>
-            <div>
-              <h4 style={{ color: '#388e3c', margin: '0 0 0.5rem 0' }}>Season</h4>
-              <p style={{ margin: 0 }}>{seasonal.season}</p>
-            </div>
-            <div>
-              <h4 style={{ color: '#388e3c', margin: '0 0 0.5rem 0' }}>Details</h4>
-              <p style={{ margin: 0 }}>{seasonal.details}</p>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Additional Actions */}
       <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
         <button

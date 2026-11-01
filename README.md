@@ -1,136 +1,104 @@
-# Kerala BioDiversity Platform 🌿
+# Kerala Biodiversity Platform
 
-A comprehensive React-based biodiversity exploration platform showcasing the rich flora and fauna of Kerala, India. Discover, learn, and connect with nature through advanced species identification, conservation insights, and interactive features.
+A React application to explore species data relevant to Kerala using public biodiversity APIs and simple client-side features (search, image-based identification, favorites, comparison, and random discovery).
 
-## 🌟 Features
+## What this project currently is
 
-### 🔍 Species Discovery
-- **AI-Powered Plant Identification**: Upload images for instant plant identification using PlantNet API
-- **Comprehensive Species Database**: Explore thousands of species with detailed information from iNaturalist
-- **Random Species Discovery**: "Surprise me" feature to discover new species daily
-- **Advanced Search & Filtering**: Find species by category, conservation status, and more
+- Frontend-only React app (no backend service)
+- Uses external APIs at runtime
+- Stores user-specific data in browser LocalStorage
+- Focused on learning/demo UX rather than production-grade biodiversity analytics
 
-### 📚 Species Information
-- **Detailed Species Pages**: Comprehensive information including taxonomy, habitat, and ecology
-- **Conservation Status**: Real-time conservation status and protection information
-- **Seasonal Information**: Best times to spot different species throughout the year
-- **High-Quality Images**: Beautiful galleries of species photography
+## Core Features
 
-### 🎯 Personal Features
-- **Favorites & Bookmarks**: Save and organize your favorite species discoveries
-- **Species Comparison**: Compare up to 3 species side-by-side with detailed analysis
-- **Discovery History**: Track your species exploration journey
-- **Personal Gallery**: Curated collection of discovered species
+- Text search for species (via iNaturalist API)
+- Image-driven plant identification (via PlantNet API)
+- Species detail view
+- Favorites page (LocalStorage-backed)
+- Compare up to 3 species
+- Gallery view from discovered species
+- Random discovery with local history
 
-### 🖼️ Visual Experience
-- **Species Gallery**: Dedicated gallery view with filtering and sorting options
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Grid & Masonry Layouts**: Multiple viewing options for the best visual experience
-- **Conservation Badges**: Visual indicators for species protection status
+## Tech Stack
 
-## 🛠️ Technology Stack
+- React 17
+- React Router DOM v5
+- Plain CSS + inline styles
+- Browser `fetch` API
+- LocalStorage for persistence
 
-- **Frontend**: React 17.0.2 with React Router DOM v5
-- **APIs**: 
-  - iNaturalist API for biodiversity data
-  - PlantNet API for AI plant identification
-- **Styling**: CSS3 with Grid and Flexbox layouts
-- **Data Storage**: LocalStorage for client-side persistence
-- **Responsive Design**: Mobile-first approach with CSS Grid
+## Project Structure
 
-## 🚀 Live Demo
-
-Visit the live application: **[Kerala BioDiversity Platform](kerala-bio-diversity-platform-93t4bkubd-sree444s-projects.vercel.app)**
-
-Experience the full platform with all features including species discovery, AI plant identification, favorites management, and conservation insights.
-
-## 📱 How to Use
-
-### 🔍 Discovering Species
-1. **Browse by Category**: Use the navigation to explore different types of species
-2. **Upload Images**: Use the image search feature to identify plants instantly
-3. **Random Discovery**: Click "Surprise Me" for daily species recommendations
-
-### ⭐ Managing Favorites
-1. **Save Species**: Click the heart icon on any species card to add to favorites
-2. **View Collection**: Access your saved species through the Favorites page
-3. **Organize**: Remove or clear your favorites as needed
-
-### 🔄 Comparing Species
-1. **Add to Comparison**: Select species you want to compare
-2. **Detailed Analysis**: View side-by-side comparison with key differences
-3. **Conservation Insights**: Understand conservation status and threats
-
-### 🖼️ Gallery Experience
-1. **Filter by Category**: Birds, Plants, Mammals, Reptiles, and more
-2. **Sort Options**: Alphabetical, recent, or conservation status
-3. **View Modes**: Switch between grid and masonry layouts
-
-## 🏗️ Project Structure
-
-```
+```text
 src/
-├── components/          # Reusable UI components
-│   ├── Header.js       # Navigation header
-│   ├── PlantCard.js    # Species display cards
-│   ├── PlantList.js    # Species listing component
-│   ├── SearchBar.js    # Search functionality
-│   ├── ImageSearch.js  # AI image identification
-│   └── Footer.js       # Site footer
-├── pages/              # Main application pages
-│   ├── Home.js         # Homepage with featured content
-│   ├── About.js        # About page
-│   ├── Gallery.js      # Species gallery view
-│   ├── SpeciesDetails.js # Detailed species information
-│   ├── Favorites.js    # User's saved species
-│   ├── Compare.js      # Species comparison tool
-│   └── RandomDiscovery.js # Random species discovery
-├── api/                # External API integrations
-│   ├── gbif.js         # GBIF API integration
-│   └── plantnet.js     # PlantNet API integration
-├── styles/             # CSS stylesheets
-│   └── main.css        # Main stylesheet
-└── assets/             # Static assets
-    └── logo.svg        # Application logo
+  api/
+    plantnet.js          # PlantNet integration
+    trefle.js            # iNaturalist search integration (legacy filename)
+  components/
+    Footer.js
+    Header.js
+    ImageSearch.js
+    PlantCard.js
+    PlantList.js
+    SearchBar.js
+  pages/
+    About.js
+    Compare.js
+    Favorites.js
+    Gallery.js
+    Home.js
+    NotFound.js
+    RandomDiscovery.js
+    SpeciesDetails.js
+  styles/
+    main.css
 ```
 
-## 🌍 Conservation Impact
+## Prerequisites
 
-This platform aims to:
-- **Raise Awareness**: Educate users about Kerala's biodiversity and conservation needs
-- **Promote Conservation**: Highlight endangered and protected species
-- **Encourage Exploration**: Make biodiversity discovery accessible and engaging
-- **Support Research**: Provide easy access to scientific species information
+- Node.js 16+ (Node 18 recommended)
+- npm
 
-## 🤝 Contributing
+## Environment Variables
 
-We welcome contributions to improve the Kerala BioDiversity Platform! Here's how you can help:
+Create a `.env` file in the project root (copy from `.env.example`):
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/new-feature`
-3. Commit your changes: `git commit -m 'Add new feature'`
-4. Push to the branch: `git push origin feature/new-feature`
-5. Submit a pull request
+```bash
+REACT_APP_PLANTNET_API_KEY=your_plantnet_api_key_here
+```
 
-## 📄 License
+Without this key, image identification will not work.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Getting Started
 
-## 🙏 Acknowledgments
+```bash
+npm install
+npm start
+```
 
-- **iNaturalist**: For providing comprehensive biodiversity data
-- **PlantNet**: For AI-powered plant identification services
-- **Kerala Forest Department**: For conservation status information
-- **Nature Photographers**: For beautiful species imagery
-- **Open Source Community**: For the tools and libraries that make this possible
+Then open `http://localhost:3000`.
 
-## 📞 Contact
+## Build for Production
 
-- **Repository**: [Kerala-Botaniq](https://github.com/Sreee444/Kerala-BioDiversity-Platform)
-- **Issues**: [Report bugs or request features](https://github.com/Sreee444/Kerala-BioDiversity-Platform/issues)
+```bash
+npm run build
+```
 
----
+This creates optimized static files in `build/`.
 
-**Explore. Discover. Conserve.** 🌱
+## Interview Documentation
 
-> "In every walk with nature, one receives far more than they seek." - John Muir
+For architecture decisions, "why this instead of that", trade-offs, coding style, and future roadmap, read:
+
+- [INTERVIEW_GUIDE.md](./docs/INTERVIEW_GUIDE.md)
+
+## Known Limitations
+
+- No backend; API keys are exposed to client at runtime
+- No authentication/user accounts
+- No server-side caching or API rate-limit handling
+- Heavy inline styling can be harder to maintain at scale
+
+## License
+
+MIT
